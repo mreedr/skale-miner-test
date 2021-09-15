@@ -40,15 +40,6 @@ async function doWeb3Mine(contractAddr, pk) {
   console.log(await ethersProvider.getBalance(seperateAcct.address))
 }
 
-if (require.main === module) { // only call main when being ran from command line
-  main()
-    .then(() => process.exit(0))
-    .catch(error => {
-      console.error(error)
-      process.exit(1)
-    })
-}
-
 async function deployPayer(web3, ownerKey) {
     const myContract = new web3.eth.Contract(payerAbi);
 
@@ -70,6 +61,16 @@ async function send(web3, tr, pk, address, value=0) {
     let signed = await web3.eth.accounts.signTransaction(tx, pk)
     return web3.eth.sendSignedTransaction(signed.rawTransaction)
 }
+
+if (require.main === module) { // only call main when being ran from command line
+  main()
+    .then(() => process.exit(0))
+    .catch(error => {
+      console.error(error)
+      process.exit(1)
+    })
+}
+
 
 // async function doEthersMine(pk) {
 //   let seperateAcct = new ethers.Wallet(pk, ethersProvider)
