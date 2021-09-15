@@ -24,25 +24,25 @@ function mineFreeGas(gasAmount, address, nonce, ethers) {
   let maxNumber = BN.from(2).pow(BN.from(256)).sub(BN.from(1))
   let divConstant = maxNumber.div(DIFFICULTY)
   let candidate
-  while (true){
-    candidate = ethers.utils.randomBytes(32)
-    let candidateHash = BN.from(ethers.utils.solidityKeccak256([ 'bytes32', ], [ candidate ]), 16)
-    let resultHash = nonceAddressXOR.xor(candidateHash)
-    let externalGas = divConstant.div(resultHash)
-    // console.log(externalGas.toString(), gasAmount.toString(), externalGas.gte(gasAmount))
-    if (externalGas.gte(gasAmount)) {
-      break
-    }
-  }
   // while (true){
   //   candidate = ethers.utils.randomBytes(32)
   //   let candidateHash = BN.from(ethers.utils.solidityKeccak256([ 'bytes32', ], [ candidate ]), 16)
   //   let resultHash = nonceAddressXOR.xor(candidateHash)
-  //   let externalGas = divConstant.div(resultHash).toNumber()
-  //   if (externalGas >= gasAmount) {
+  //   let externalGas = divConstant.div(resultHash)
+  //   // console.log(externalGas.toString(), gasAmount.toString(), externalGas.gte(gasAmount))
+  //   if (externalGas.gte(gasAmount)) {
   //     break
   //   }
   // }
+  while (true){
+    candidate = ethers.utils.randomBytes(32)
+    let candidateHash = BN.from(ethers.utils.solidityKeccak256([ 'bytes32', ], [ candidate ]), 16)
+    let resultHash = nonceAddressXOR.xor(candidateHash)
+    let externalGas = divConstant.div(resultHash).toNumber()
+    if (externalGas >= gasAmount) {
+      break
+    }
+  }
   return BN.from(candidate, 16).toString()
 }
 

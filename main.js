@@ -20,23 +20,26 @@ let payerAbi = JSON.parse('[ { "inputs": [], "stateMutability": "payable", "type
 let payerBytecode = "0x608060405261014c806100136000396000f3fe60806040526004361061002d5760003560e01c80630c11dedd1461003657806312065fe01461007a57610034565b3661003457005b005b6100786004803603602081101561004c57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100a5565b005b34801561008657600080fd5b5061008f6100f7565b6040518082815260200191505060405180910390f35b8073ffffffffffffffffffffffffffffffffffffffff166108fc670de0b6b3a76400009081150290604051600060405180830381858888f193505050501580156100f3573d6000803e3d6000fd5b5050565b60003073ffffffffffffffffffffffffffffffffffffffff163190509056fea26469706673582212209d96fa3f8ceebc1f6b77e3efcf549b29df42a18bd96fd90b298e5391f504821e64736f6c63430007040033"
 
 /* - - - MAIN - - -  */
-async function main() {
-  let payerContr = await deployPayer(web3, process.env.SKALE_PK)
-  let pBal = await payerContr.getBalance()
-  console.log('payer bal', pBal.toString())
-  assert(pBal.toString() !== '0')
-  await doWeb3Mine(payerContr.address, userPK)
-  pBal = await payerContr.getBalance()
-  console.log('payer bal', pBal.toString())
-}
-
-// async function mainSkale() {
+// async function main() {
 //   let payerContr = await deployPayer(web3, process.env.SKALE_PK)
 //   let pBal = await payerContr.getBalance()
 //   console.log('payer bal', pBal.toString())
 //   assert(pBal.toString() !== '0')
 //   await doWeb3Mine(payerContr.address, userPK)
+//   pBal = await payerContr.getBalance()
+//   console.log('payer bal', pBal.toString())
 // }
+
+async function main() {
+  let payerContr = await deployPayer(web3, process.env.SKALE_PK)
+  let pBal = await payerContr.getBalance()
+  console.log('payer bal', pBal.toString())
+  assert(pBal.toString() !== '0')
+
+  await doEthersMine(payerContr.address, userPK)
+  // pBal = await payerContr.getBalance()
+  // console.log('payer bal', pBal.toString())
+}
 
 async function doWeb3Mine(contractAddr, pk) {
   let seperateAcct = new ethers.Wallet(pk, ethersProvider)
@@ -95,10 +98,12 @@ async function doEthersMine(contractAdd, pk) {
     value: ethers.utils.parseEther("0.0"),
     data: "0x0c11dedd000000000000000000000000"+seperateAcct.address.slice(2)
   })
-  await ethersMiner.mineGasForTransaction(ethers, tx, seperateAcct)
-  console.log('tx', tx.gas.toString())
 
+  await ethersMiner.mineGasForTransaction(ethers, tx, seperateAcct)
   delete tx.gas
+  // console.log('tx', tx.gas.toString())
+
+  // delete tx.gas
   await seperateAcct.sendTransaction(tx)
   // await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
