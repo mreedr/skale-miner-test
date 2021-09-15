@@ -23,6 +23,7 @@ let payerBytecode = "0x608060405261014c806100136000396000f3fe6080604052600436106
 async function main() {
   let payerContr = await deployPayer(web3, process.env.SKALE_PK)
   let pBal = await payerContr.getBalance()
+  console.log('payer bal', pBal.toString())
   assert(pBal.toString() !== '0')
   await doWeb3Mine(payerContr.address, userPK)
 }
@@ -44,9 +45,11 @@ async function doWeb3Mine(contractAddr, pk) {
 }
 
 async function deployPayer(web3, ownerKey) {
+    // console.log(10 ** 19)
     const myContract = new web3.eth.Contract(payerAbi);
     let address = web3.eth.accounts.privateKeyToAccount(ownerKey)['address'];
-    let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, ethers.utils.parseUnits('0.001', 'ether').toNumber());
+    let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, ethers.utils.parseUnits('1', 'ether').toString());
+    // let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, 10 ** 19);
     return new ethers.Contract(tx.contractAddress, payerAbi, ethersProvider)
 }
 
