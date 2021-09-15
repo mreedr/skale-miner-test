@@ -26,7 +26,17 @@ async function main() {
   console.log('payer bal', pBal.toString())
   assert(pBal.toString() !== '0')
   await doWeb3Mine(payerContr.address, userPK)
+  pBal = await payerContr.getBalance()
+  console.log('payer bal', pBal.toString())
 }
+
+// async function mainSkale() {
+//   let payerContr = await deployPayer(web3, process.env.SKALE_PK)
+//   let pBal = await payerContr.getBalance()
+//   console.log('payer bal', pBal.toString())
+//   assert(pBal.toString() !== '0')
+//   await doWeb3Mine(payerContr.address, userPK)
+// }
 
 async function doWeb3Mine(contractAddr, pk) {
   let seperateAcct = new ethers.Wallet(pk, ethersProvider)
@@ -45,11 +55,10 @@ async function doWeb3Mine(contractAddr, pk) {
 }
 
 async function deployPayer(web3, ownerKey) {
-    // console.log(10 ** 19)
     const myContract = new web3.eth.Contract(payerAbi);
     let address = web3.eth.accounts.privateKeyToAccount(ownerKey)['address'];
-    let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, ethers.utils.parseUnits('1', 'ether').toString());
-    // let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, 10 ** 19);
+    // let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, ethers.utils.parseUnits('1', 'ether').toString());
+    let tx = await send(web3, myContract.deploy({data: payerBytecode}), ownerKey, address, 10 ** 18);
     return new ethers.Contract(tx.contractAddress, payerAbi, ethersProvider)
 }
 
