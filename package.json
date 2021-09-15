@@ -1,0 +1,16 @@
+{
+  "name": "skale-miner-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./main.js"
+  },
+  "dependencies": {
+    "bn.js": "^5.2.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
+    "ethers": "^5.4.6",
+    "web3": "^1.5.2"
+  }
+}
