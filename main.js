@@ -21,7 +21,7 @@ async function main() {
   // let contract = new ethers.Contract('0x3fca0a6295d42f5b87eac3fed4c2364361c46d17', payerAbi, ethersProvider)
   // console.log('payer contract', (await contract.getBalance()).toString())
   let contractAddr = await deployPayer(web3, skaleOwnerPK)
-  await doWeb3Mine(contract.address, userPK)
+  await doWeb3Mine(contractAddr, userPK)
 }
 
 async function doWeb3Mine(contractAddr, pk) {
