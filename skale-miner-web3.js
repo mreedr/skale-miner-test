@@ -29,7 +29,6 @@ function mineFreeGas(gasAmount, address, nonce, web3) {
         let candidateHash = new BN(web3.utils.soliditySha3(candidate).slice(2), 16);
         let resultHash = nonceAddressXOR.xor(candidateHash);
         let externalGas = divConstant.div(resultHash).toNumber();
-        console.log('herre', externalGas, gasAmount)
         if (externalGas >= gasAmount) {
             break;
         }

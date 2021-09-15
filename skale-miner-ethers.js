@@ -13,7 +13,7 @@ async function mineGasForTransaction(ethers, tx, signer) {
   let address = tx.from
   let nonce = tx.nonce
   let gas = tx.gas
-  tx.gasPrice = mineFreeGas(gas, address, nonce, ethers)
+  tx.gasPrice = BN.from(mineFreeGas(gas.toString(), address, nonce.toString(), ethers))
 }
 
 function mineFreeGas(gasAmount, address, nonce, ethers) {
@@ -28,12 +28,21 @@ function mineFreeGas(gasAmount, address, nonce, ethers) {
     candidate = ethers.utils.randomBytes(32)
     let candidateHash = BN.from(ethers.utils.solidityKeccak256([ 'bytes32', ], [ candidate ]), 16)
     let resultHash = nonceAddressXOR.xor(candidateHash)
-    let externalGas = divConstant.div(resultHash).toNumber()
-    console.log('herre', externalGas, gasAmount)
-    if (externalGas >= gasAmount) {
+    let externalGas = divConstant.div(resultHash)
+    // console.log(externalGas.toString(), gasAmount.toString(), externalGas.gte(gasAmount))
+    if (externalGas.gte(gasAmount)) {
       break
     }
   }
+  // while (true){
+  //   candidate = ethers.utils.randomBytes(32)
+  //   let candidateHash = BN.from(ethers.utils.solidityKeccak256([ 'bytes32', ], [ candidate ]), 16)
+  //   let resultHash = nonceAddressXOR.xor(candidateHash)
+  //   let externalGas = divConstant.div(resultHash).toNumber()
+  //   if (externalGas >= gasAmount) {
+  //     break
+  //   }
+  // }
   return BN.from(candidate, 16).toString()
 }
 
