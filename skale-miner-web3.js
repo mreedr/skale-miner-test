@@ -9,6 +9,7 @@ async function mineGasForTransaction(web3, tx) {
     }
     if (!tx.gas) {
         tx.gas = await web3.eth.estimateGas(tx)
+        // tx.gas = 31377
     }
     let address = tx.from
     let nonce = web3.utils.isHex(tx.nonce) ? web3.utils.hexToNumber(tx.nonce) : tx.nonce;
