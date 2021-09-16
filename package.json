@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./main.js"
+    "start": "node ./main.js",
+    "test-pool": "node ./community-pool.js"
   },
   "dependencies": {
+    "axios": "^0.21.4",
     "bn.js": "^5.2.0",
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",

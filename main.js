@@ -30,16 +30,27 @@ let payerBytecode = "0x608060405261014c806100136000396000f3fe6080604052600436106
 //   console.log('payer bal', pBal.toString())
 // }
 
-async function main() {
-  let payerContr = await deployPayer(web3, process.env.SKALE_PK)
-  let pBal = await payerContr.getBalance()
-  console.log('payer bal', pBal.toString())
-  assert(pBal.toString() !== '0')
+// async function main() {
+  //   let payerContr = await deployPayer(web3, process.env.SKALE_PK)
+  //   let pBal = await payerContr.getBalance()
+  //   console.log('payer bal', pBal.toString())
+  //   assert(pBal.toString() !== '0')
 
-  await doEthersMine(payerContr.address, userPK)
-  // pBal = await payerContr.getBalance()
-  // console.log('payer bal', pBal.toString())
-}
+  //   await doEthersMine(payerContr.address, userPK)
+  //   // pBal = await payerContr.getBalance()
+  //   // console.log('payer bal', pBal.toString())
+  // }
+async function main() {
+    let bal = await ethersProvider.getBalance('0xB6A3fBD0CE37813B069Ac4770c9a1D07C4FF6991');
+    console.log('bal', bal.toString())
+    // let payerContr = new ethers.Contract('0x00DCbC2cCf53271b12fd611522Efbf50D013EeaF', payerAbi, skaleOwner)
+    // let pBal = await payerContr.getBalance()
+    // console.log('payer bal', pBal.toString())
+    // assert(pBal.toString() !== '0')
+    // await doWeb3Mine(payerContr.address, userPK)
+    // pBal = await payerContr.getBalance()
+    // console.log('payer bal', pBal.toString())
+  }
 
 async function doWeb3Mine(contractAddr, pk) {
   let seperateAcct = new ethers.Wallet(pk, ethersProvider)
