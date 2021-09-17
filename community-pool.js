@@ -18,8 +18,6 @@ async function main() {
   let IMA_ABI = await axios.get(process.env.SKALE_DEV_IMA_RINKEBY_ABI)
   let communityPool = new ethers.Contract(IMA_ABI.data.community_pool_address, IMA_ABI.data.community_pool_abi, mainEthersProvider)
 
-  // console.log('communityPool', communityPool)
-  // process.exit()
 
   console.log('mainchain user balance:', (await mainEthersProvider.getBalance(mainchainUser.address)).toString())
 
@@ -34,7 +32,9 @@ async function main() {
     console.log('ERROR: ', `https://rinkeby.etherscan.io/tx/${tx.transactionHash}`)
   }
 
-  let bal = await communityPool.getBalance(mainchainUser.address)
+  // console.log('communityPool', communityPool)
+
+  let bal = await communityPool.getBalance(process.env.SKALE_DEV_CHAIN_NAME)
   console.log('community pool balance:', bal.toString())
 }
 
